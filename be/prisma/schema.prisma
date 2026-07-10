@@ -7,9 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Photo {
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  products  Product[]
+}
+
+model Product {
   id        Int      @id @default(autoincrement())
+  name      String
+  price     Int
+  category  String
   s3Key     String
-  filename  String
+  link      String?
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }
